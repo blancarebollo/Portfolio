@@ -1,17 +1,16 @@
-# Buscador de Parques Cercanos
+# Nearby Parks Finder
+This project is a web application built with Streamlit that allows users to search for parks near a given location. It uses the Google Places API to retrieve information about nearby parks.
 
-Este proyecto es una aplicación web desarrollada con Streamlit que permite buscar parques cercanos a una ubicación proporcionada por el usuario. Utiliza la **Google Places API** para obtener información sobre los parques cercanos.
+# Requirements
+Python 3.7 or higher
 
-## Requisitos
+Google Places API key
 
-- Python 3.7 o superior
-- Clave de API de Google Places
+# Installation
+Clone this repository or download the files.
 
-## Instalación
+Create a virtual environment (optional but recommended).
 
-1. Clona este repositorio o descarga los archivos.
-2. Crea un entorno virtual (opcional pero recomendado).
-3. Instala las dependencias:
-
+# Install the dependencies:
 ```bash
 pip install -r requirements.txt
