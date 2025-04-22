@@ -3,3 +3,4 @@ streamlit-geolocation
 requests
 folium
 python-dotenv
+streamlit-js-eval
