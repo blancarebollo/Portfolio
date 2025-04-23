@@ -4,3 +4,5 @@ requests
 folium
 python-dotenv
 streamlit-js-eval
+dotenv
+os

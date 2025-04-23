@@ -1,9 +1,9 @@
 # Import libraries
-import streamlit as st           # Streamlit to build the web app
+import streamlit as st
+import streamlit_geolocation
+from streamlit.components.v1 import html # Streamlit to build the web app
 import requests                  # Requests to interact with Google APIs
 import folium                    # Folium to generate the map
-import streamlit_geolocation
-from streamlit.components.v1 import html
 from dotenv import load_dotenv
 import os
 
@@ -66,10 +66,10 @@ def get_places(lat, lng, radius, place_type):
 def show_map(places, center_lat, center_lng):
     # Create a map centered on user's location
     map_obj = folium.Map(location=[center_lat, center_lng], zoom_start=14)
-    
+
     # Add a marker for the user's location
     folium.Marker([center_lat, center_lng], popup='You are here!').add_to(map_obj)
-    
+
     # Add markers for all found parks
     for place in places:
         folium.Marker(
@@ -77,7 +77,7 @@ def show_map(places, center_lat, center_lng):
             popup=f"{place['name']} <br>{place['address']}",
             icon = folium.Icon(color = 'green')
         ).add_to(map_obj)
-    
+
     # Return the map as embeddable HTML
     return map_obj._repr_html_()
 
