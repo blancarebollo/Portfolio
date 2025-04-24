@@ -1,6 +1,6 @@
 # Import libraries
 import streamlit as st
-import streamlit_geolocation
+from streamlit_js_eval import streamlit_js_eval
 from streamlit.components.v1 import html # Streamlit to build the web app
 import requests                  # Requests to interact with Google APIs
 import folium                    # Folium to generate the map
@@ -108,11 +108,15 @@ def app():
                 st.error("Couldn't get coordinates. Check your address.")
 
     else:
-        loc = streamlit_geolocation.get_geolocation()
-        if loc:
-            st.write(f"Detected location: {loc}")
-            lat = loc['latitude']
-            lng = loc['longitude']
+        location = streamlit_js_eval(
+            js_expressions="navigator.geolocation.getCurrentPosition",
+            key="get_geolocation"
+        )
+
+        if location and 'coords' in location:
+            lat = location['coords']['latitude']
+            lng = location['coords']['longitude']
+            st.success(f"Detected location: {lat}, {lng}")
 
             places = get_places(lat, lng, radius, search_type)
             if places:
