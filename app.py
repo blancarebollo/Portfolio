@@ -7,12 +7,12 @@ import folium  # Folium to generate the map
 from dotenv import load_dotenv
 import os
 
+# Load the .env file
 load_dotenv()
 
+# Get the API key from environment variables
 api_key = os.getenv('GOOGLE_API_KEY')  # Make sure your API key is loaded correctly
-
-st.write(f"API Key loaded: {api_key}")
-
+st.write(f"API Key loaded: {api_key}")  # Debugging the API key
 
 # Function to get latitude and longitude from a text address using Google Geocoding API
 def get_coordinates(address):
@@ -52,13 +52,13 @@ def get_places(lat, lng, radius, place_type):
         url += f"&keyword={keyword}"
 
     response = requests.get(url)
-    #st.write("Request URL:", url)  # Helps with debugging
+    # st.write("Request URL:", url)  # Helps with debugging
 
     places = []
 
     if response.status_code == 200:
         data = response.json()
-        #st.json(data)  # Helps with debugging
+        # st.json(data)  # Helps with debugging
         for result in data.get('results', []):
             places.append({
                 'name': result['name'],
@@ -93,6 +93,7 @@ def show_map(places, center_lat, center_lng):
 
 # Main Streamlit app
 def app():
+    # Move st.set_page_config to the top of your app function
     st.set_page_config(page_title="Nearby Finder", layout="centered")
     st.title("🍃 Find Parks, Biergartens, or Lakes Near You")
 
