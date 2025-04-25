@@ -11,9 +11,13 @@ load_dotenv()
 
 api_key = os.getenv('GOOGLE_API_KEY')  # Make sure your API key is loaded correctly
 
+st.write(f"API Key loaded: {api_key}")
+
+
 # Function to get latitude and longitude from a text address using Google Geocoding API
 def get_coordinates(address):
     url = f'https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}'
+    st.write(f"Geocoding URL: {url}")  # Log the URL being called
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
@@ -24,7 +28,7 @@ def get_coordinates(address):
             st.error("No coordinates found for that address.")
             return None, None
     else:
-        st.error("Error retrieving coordinates.")
+        st.error(f"Error retrieving coordinates. Status code: {response.status_code}")
         return None, None
 
 # Function to get nearby places using the Google Places API
