@@ -110,9 +110,9 @@ def app():
     else:
         loc = get_geolocation()
 
-        if loc and 'latitude' in loc and 'longitude' in loc:
-            lat = loc['latitude']
-            lng = loc['longitude']
+        if loc and 'coords' in loc:
+            lat = loc['coords']['latitude']
+            lng = loc['coords']['longitude']
             st.success(f"Detected location: {lat}, {lng}")
 
             places = get_places(lat, lng, radius, search_type)
