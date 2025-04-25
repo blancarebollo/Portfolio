@@ -109,9 +109,16 @@ def app():
 
     else:
         location = streamlit_js_eval(
-            js_expressions="navigator.geolocation.getCurrentPosition",
-            key="get_geolocation"
-        )
+            js_expressions="""
+                new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(
+                (pos) => resolve({coords: pos.coords}),
+                (err) => reject(err)
+            );
+            });
+            """,
+        key="get_geolocation"
+)
 
         if location and 'coords' in location:
             lat = location['coords']['latitude']

@@ -3,4 +3,3 @@ streamlit_js_eval
 requests
 folium
 python-dotenv
-streamlit-js-eval
