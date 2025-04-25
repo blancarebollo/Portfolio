@@ -10,6 +10,8 @@ import os
 # Load the .env file
 load_dotenv()
 
+st.set_page_config(page_title="Nearby Finder", layout="centered")
+
 # Get the API key from environment variables
 api_key = os.getenv('GOOGLE_API_KEY')  # Make sure your API key is loaded correctly
 st.write(f"API Key loaded: {api_key}")  # Debugging the API key
@@ -94,7 +96,6 @@ def show_map(places, center_lat, center_lng):
 # Main Streamlit app
 def app():
     # Set the page config here before any other Streamlit commands
-    st.set_page_config(page_title="Nearby Finder", layout="centered")
 
     st.title("🍃 Find Parks, Biergartens, or Lakes Near You")
 
