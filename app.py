@@ -1,16 +1,15 @@
 # Import libraries
 import streamlit as st
 from streamlit_js_eval import get_geolocation
-from streamlit.components.v1 import html # Streamlit to build the web app
-import requests                  # Requests to interact with Google APIs
-import folium                    # Folium to generate the map
+from streamlit.components.v1 import html  # Streamlit to build the web app
+import requests  # Requests to interact with Google APIs
+import folium  # Folium to generate the map
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-
-api_key = os.getenv('GOOGLE_API_KEY')      # (Optional here) Useful to handle in-memory files
+api_key = os.getenv('GOOGLE_API_KEY')  # Make sure your API key is loaded correctly
 
 # Function to get latitude and longitude from a text address using Google Geocoding API
 def get_coordinates(address):
@@ -28,38 +27,45 @@ def get_coordinates(address):
         st.error("Error retrieving coordinates.")
         return None, None
 
-# Function to get nearby parks using the Google Places API
+# Function to get nearby places using the Google Places API
 def get_places(lat, lng, radius, place_type):
+    type_param = ''
+    keyword = ''
+
     if place_type == 'Park':
         type_param = 'park'
-        keyword = ''
     elif place_type == 'Biergarten':
-        type_param = 'biergarten'
         keyword = 'biergarten'
     elif place_type == 'Lake':
-        type_param = 'natural_feature'
         keyword = 'lake'
 
-    url = f'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius={radius}&type={type_param}&keyword={keyword}&key={api_key}'
+    # Corrected URL for Google Places API
+    url = f'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{lng}&radius={radius}&key={api_key}'
+
+    if type_param:
+        url += f"&type={type_param}"
+    if keyword:
+        url += f"&keyword={keyword}"
+
     response = requests.get(url)
+    #st.write("Request URL:", url)  # Helps with debugging
+
     places = []
 
     if response.status_code == 200:
         data = response.json()
-        for result in data['results']:
-            name = result['name']
-            address = result.get('vicinity', 'No address provided')
-            lat = result['geometry']['location']['lat']
-            lng = result['geometry']['location']['lng']
-            maps_url = f"https://www.google.com/maps/search/?api=1&query={lat},{lng}"
-
+        #st.json(data)  # Helps with debugging
+        for result in data.get('results', []):
             places.append({
-                'name': name,
-                'address': address,
-                'lat': lat,
-                'lng': lng,
-                'map_link': maps_url
+                'name': result['name'],
+                'address': result.get('vicinity', 'No address'),
+                'lat': result['geometry']['location']['lat'],
+                'lng': result['geometry']['location']['lng'],
+                'map_link': f"https://www.google.com/maps/search/?api=1&query={result['geometry']['location']['lat']},{result['geometry']['location']['lng']}"
             })
+    else:
+        st.error("Failed to fetch from Google Places API.")
+
     return places
 
 # Function to display parks on an interactive map
@@ -75,7 +81,7 @@ def show_map(places, center_lat, center_lng):
         folium.Marker(
             [place['lat'], place['lng']],
             popup=f"{place['name']} <br>{place['address']}",
-            icon = folium.Icon(color = 'green')
+            icon=folium.Icon(color='green')
         ).add_to(map_obj)
 
     # Return the map as embeddable HTML
@@ -108,7 +114,7 @@ def app():
                 st.error("Couldn't get coordinates. Check your address.")
 
     else:
-        loc = get_geolocation()
+        loc = get_geolocation()  # Get the current location
 
         if loc and 'coords' in loc:
             lat = loc['coords']['latitude']
