@@ -10,7 +10,7 @@ import os
 load_dotenv()
 
 
-api_key = os.getenv('your_api_key')      # (Optional here) Useful to handle in-memory files
+api_key = os.getenv('GOOGLE_API_KEY')      # (Optional here) Useful to handle in-memory files
 
 # Function to get latitude and longitude from a text address using Google Geocoding API
 def get_coordinates(address):
