@@ -93,8 +93,9 @@ def show_map(places, center_lat, center_lng):
 
 # Main Streamlit app
 def app():
-    # Move st.set_page_config to the top of your app function
+    # Set the page config here before any other Streamlit commands
     st.set_page_config(page_title="Nearby Finder", layout="centered")
+
     st.title("🍃 Find Parks, Biergartens, or Lakes Near You")
 
     search_type = st.selectbox("What are you looking for?", ["Park", "Biergarten", "Lake"])
